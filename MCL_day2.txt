@@ -1,0 +1,25 @@
+● DL의 기반인 인공신경망 -> 인체의 뉴런 구조 모방
+ - 입력에 가중치 곱하고 총합을 출력층으로 전달 -> 활성함수(Activation Function) 에 따라 최종 출력 결정됨
+- 입력 : input layer / hidden layer(가중치 값) /출력 : output layer -> 보통 network 층 개수는 hidden + output layer 개수
+- 활성화 함수는 비선형! (선형인 경우 여러 층을 쌓는 의미가 X)
+ex) Sigmoid(0~1), tanh(-1~1) : 출력 범위 제한용 함수 / ReLU(Rectified Liner Unit), Leaky ReLU 함수 : 중간 층에 사용
+● 역전파(back propagation) : 예측 값과 정답과의 차이를 역방향으로 전파시키면서 최적의 가중치를 찾아가는 방법 -> 가중치&bias를 조정하는 것 = 학습 과정
+- Loss function : 정답 & 예측 값 차에 대한 수치 -> 가 최소값이 학습의 목표
+ex) MSE
+- Optimization 중 Gradient-descent : 가중치 조절 방법 -> 기울기가 가장 큰 방향으로 이동 (TMI : Loss function 자체를 구한 후 미분해서 최소값을 구해도 되지만 보통 Loss ft.은 식으로 구현하기 어려우므로 해당 방법 사용)
+ex) w_t+1 = w_t - a*(편미분기울기) (a: Learning Rate)
+이 Gradient-descent가 Pytorch 에 구현되어 있음
+ex) torch.optim.SGD(params, learning rate, ...)
+torch.optim.Adam(params,lr, ...)
+
+● DataLoader
+보통 Dataset의 80%는 Training 용, 20%는 Test용 으로 사용 (분리하는 이유 : 마치 교과서 그대로 시험 내면 100점 맞기 때문 -> 일반적인 상황에 대한 Test라 보기 어려움)
+- 실제 영상 1080p => 1920X1080X3 (height X width X (RGB) channel)
+pytorch 에서는 3X1920X1080 (c X h X w)
+- DataLoader 함수 : 이미지를 batch 단위로 나누고 불러와서 학습
+ex) torch.utils.data.DataLoader(dataset, batch_size, shuffle, ...) -> Train은 shuffle = True / Test는 shuffle = False
+=> 데이터 형태 (batch_size)x(channel)x(height)x(width)
+- 지나치게 학습이 이루어져서 새로운 데이터에 대해 성능이 나빠지는 경우 : overfitting
+underfitting 과 overfitting 사이 적정 지점을 계속 체크해서 적정 Epoch 구성
+
+
